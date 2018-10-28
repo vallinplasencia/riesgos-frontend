@@ -3,11 +3,9 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="!(isHandset$ | async)">
-    <mat-toolbar>Menu</mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+    <mat-toolbar color="primary">Menux</mat-toolbar>
+    <mat-nav-list>      
+      <router-outlet name="sidebar"></router-outlet>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -22,13 +20,15 @@
       </button>
       <span>Riesgos IT</span>
       <div>
-        <a mat-button routerLink=".">Activos</a>
+        <a mat-button [routerLink]="[{outlets:{primary: 'activos', sidebar: ['activo']}}]" routerLinkActive="router-active">Activos</a>
         <a mat-button routerLink=".">Evaluación</a>
         <a mat-button routerLink=".">Riesgos</a>
-        <a mat-button routerLink=".">Configuración</a>
+        <a mat-button [routerLink]="[{ outlets: { primary: 'configuracion',sidebar: ['configuracion'] } }]" routerLinkActive="router-active">Configuración</a>
       </div>
     </mat-toolbar>
     <!-- Add Content Here -->
     <router-outlet></router-outlet>
+    <!-- <a [routerLink]="[{ outlets: { submenu: ['configuracion'] } }]">Contact</a> -->
+   
   </mat-sidenav-content>
 </mat-sidenav-container>

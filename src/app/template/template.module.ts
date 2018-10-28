@@ -5,6 +5,8 @@ import { PlantillaComponent } from './plantilla/plantilla.component';
 
 import { RouterModule } from "@angular/router";
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { SidebarConfiguracionComponent } from './sidebar/sidebar-configuracion/sidebar-configuracion.component';
+import { SidebarActivoComponent } from './sidebar/sidebar-activo/sidebar-activo.component';
 
 @NgModule({
   imports: [
@@ -14,12 +16,14 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
   ],
   declarations: [
     PlantillaComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SidebarConfiguracionComponent,
+    SidebarActivoComponent
   ],
   exports:[
     AppMaterialModule,
     PlantillaComponent,
-    RouterModule
+    // RouterModule
   ]
 })
-export class CoreModule { }
+export class TemplateModule { }

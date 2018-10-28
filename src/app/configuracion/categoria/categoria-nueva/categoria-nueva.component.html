@@ -1,0 +1,19 @@
+<div class="container">
+  <form [formGroup]="categoriaForm">
+    <h3 class="pt-2">Datos. Nueva Categoria.</h3>
+    <hr>
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field>
+          <input matInput placeholder="Identificador" formControlName='ident'>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field>
+          <input matInput placeholder="Categoria" formControlName="categoria">
+        </mat-form-field>
+      </div>
+    </div>
+    
+  </form>
+</div>
