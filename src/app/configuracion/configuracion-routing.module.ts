@@ -5,6 +5,7 @@ import { CategoriaNuevaComponent } from './categoria/categoria-nueva/categoria-n
 import { CategoriaListarComponent } from './categoria/categoria-listar/categoria-listar.component';
 import { ProcesoListarComponent } from './proceso/proceso-listar/proceso-listar.component';
 import { ResponsableListarComponent } from './responsable/responsable-listar/responsable-listar.component';
+import { CanDeactivateGuard } from '../util/guards/can-deactivate.guard';
 
 const routes: Routes = [
   { 
@@ -13,7 +14,11 @@ const routes: Routes = [
     children: [  
       { path: '', redirectTo: 'categoria' },  
       { path: 'categoria', component: CategoriaListarComponent },
-      { path: 'categoria/nueva', component: CategoriaNuevaComponent },      
+      { 
+        path: 'categoria/nueva', 
+        component: CategoriaNuevaComponent,
+        canDeactivate: [CanDeactivateGuard]
+      },
       { path: 'proceso', component: ProcesoListarComponent },
       { path: 'responsable', component: ResponsableListarComponent },      
     ]

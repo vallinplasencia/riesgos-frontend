@@ -4,7 +4,8 @@ export class Urls {
       * URL donde se van a guardar y obtener los datos de la app.
       * 
       */
-     public static readonly URL_APP = 'http://localhost:4201';
+     public static readonly URL_APP = 'http://riesgos-backend.mii';
+    //  public static readonly URL_APP = 'http://github.com';
     
      /** 
       * URL donde se podran guardar los LOG (errores) de la app.
@@ -18,5 +19,15 @@ export class Urls {
 
 
      /******************** URL PATH DE LA APP******************/
-     public static readonly CATEGORIA = 'categoria';
+     public static readonly CATEGORIA = 'api/categoria';
+
+    /**
+     * Retorna la url absoluta basada en la url BASE de la APP y el path que le 
+     * pases por @param urlOrPath .Si le pasas una url absoluta la retorna exactamente. 
+     * La url base se define en esta clase.
+     * @param url path o url absoluta.
+     */
+     public static crearUrl(url: string) {
+        return url.startsWith('http') ? url : `${this.URL_APP}/${url}`;
+      }
 }
