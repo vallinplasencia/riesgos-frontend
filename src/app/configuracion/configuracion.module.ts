@@ -9,6 +9,7 @@ import { CategoriaNuevaComponent } from './categoria/categoria-nueva/categoria-n
 import { CategoriaListarComponent } from './categoria/categoria-listar/categoria-listar.component';
 import { ProcesoListarComponent } from './proceso/proceso-listar/proceso-listar.component';
 import { ResponsableListarComponent } from './responsable/responsable-listar/responsable-listar.component';
+import { TemplateModule } from '../template/template.module';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ResponsableListarComponent } from './responsable/responsable-listar/res
     ConfiguracionRoutingModule,
     ReactiveFormsModule,
     AppMaterialModule,
+    TemplateModule
   ],
   declarations: [
     ConfiguracionComponent, 

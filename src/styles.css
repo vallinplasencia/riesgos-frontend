@@ -3,9 +3,17 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+/*************** Contenedor ***************/
+.container{
+    padding-right: 0;
+    padding-left: 0;
+}
+/*************** FIN Contenedor ***************/
+/*************** Rutas ***************/
 .router-active{
     background-color: brown !important;
 }
+/*************** FIN Rutas ***************/
 
 /**************Sobreescribiendo estilos de bootstrap*************************/
 
