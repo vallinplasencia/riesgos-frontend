@@ -12,7 +12,7 @@
 ### Clonado el repo
 ``` bash
 # clonando el repositorio
-$ git clone https://github.com/coreui/coreui-free-bootstrap-admin-template.git riesgos-frontend
+$ git clone https://github.com/vallinplasencia/riesgos-frontend.git riesgos-frontend
 
 # Navedando al directorio del proyecto
 $ cd riesgos-frontend
@@ -31,7 +31,9 @@ $ ng serve --open
 # Construir el proyecto para produccion
 $ ng build
 ```
+##LICENSE
 
+Esta aplicacion está bajo licencia [MIT license](https://opensource.org/licenses/MIT).
 
 ## ***************** MAS DATOS INTERESANTES *****************
 
