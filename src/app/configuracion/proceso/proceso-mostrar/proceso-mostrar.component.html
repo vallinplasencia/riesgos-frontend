@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="mt-1">
+    <div class="card" *ngIf="proceso" [hidden]="eliminando">
+      <h5 class="card-header">
+        Datos de <strong>{{proceso.proceso}}</strong>.
+      </h5>
+      <div class="card-body">
+
+        <dl class="row">
+          <dt class="col-sm-2 text-right">Proceso:</dt>
+          <dd class="col-sm-10">{{proceso.proceso}}</dd>
+        </dl>
+        <div class="d-flex justify-content-end">
+          <a mat-stroked-button class="mr-2" color="primary" [routerLink]="['/configuracion/proceso/editar', proceso.id]">
+            <mat-icon>edit</mat-icon> Editar
+          </a>
+          <a  mat-stroked-button class="eliminar mr-2" (click)="confirmarEliminacion($event, proceso.id, proceso.proceso)">
+            <mat-icon>delete</mat-icon> Eliminar
+          </a>
+          <a mat-raised-button color="primary" routerLink="/configuracion/proceso">
+            <mat-icon>check</mat-icon> Aceptar
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="proceso" [hidden]="!eliminando" class="card">
+      <h5 class="card-header">
+        Eliminado proceso
+      </h5>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-2 text-right">Proceso:</dt>
+          <dd class="col-sm-10">{{proceso.proceso}}</dd>
+        </dl>
+        <button mat-stroked-button type="button" (click)="cancelarEliminacion()">
+          <mat-icon>arrow_back</mat-icon> Cancelar</button>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="!proceso">
+      <h5 class="card-header">
+        Problema
+      </h5>
+      <div class="card-body">
+        <p style="color: #980000;">Ocurrio un problema. Inténtelo mas tarde.</p>
+        <a routerLink="/">Ir a la página de inicio.</a>
+      </div>
+    </div>
+  </div>
+</div>

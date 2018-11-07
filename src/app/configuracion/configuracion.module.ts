@@ -13,6 +13,8 @@ import { TemplateModule } from '../template/template.module';
 import { Categoria2ListarComponent } from './categoria/categoria2-listar/categoria2-listar.component';
 import { CategoriaMostrarComponent } from './categoria/categoria-mostrar/categoria-mostrar.component';
 import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria-editar.component';
+import { ProcesoMostrarComponent } from './proceso/proceso-mostrar/proceso-mostrar.component';
+import { ProcesoNuevoComponent } from './proceso/proceso-nuevo/proceso-nuevo.component';
 
 @NgModule({
   imports: [
@@ -29,7 +31,7 @@ import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria
     ProcesoListarComponent, 
     ResponsableListarComponent, 
     Categoria2ListarComponent, 
-    CategoriaMostrarComponent, CategoriaEditarComponent
+    CategoriaMostrarComponent, CategoriaEditarComponent, ProcesoMostrarComponent, ProcesoNuevoComponent
   ]
 })
 export class ConfiguracionModule { }

@@ -10,6 +10,9 @@ import { Categoria2ListarComponent } from './categoria/categoria2-listar/categor
 import { CategoriaMostrarComponent } from './categoria/categoria-mostrar/categoria-mostrar.component';
 import { CategoriaResolverService } from './categoria/categoria-resolver.service';
 import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria-editar.component';
+import { ProcesoMostrarComponent } from './proceso/proceso-mostrar/proceso-mostrar.component';
+import { ProcesoResolverService } from './proceso/proceso-resolver.service';
+import { ProcesoNuevoComponent } from './proceso/proceso-nuevo/proceso-nuevo.component';
 
 const routes: Routes = [
   {
@@ -56,6 +59,19 @@ const routes: Routes = [
             path: '',
             component: ProcesoListarComponent,
             canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: 'nuevo',
+            component: ProcesoNuevoComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: ':id',
+            component: ProcesoMostrarComponent,
+            canDeactivate: [CanDeactivateGuard],
+            resolve: {
+              itemData: ProcesoResolverService
+            }
           },
         ]
       }
