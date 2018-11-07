@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TemplateModule } from './template/template.module';
 import { HttpClientModule } from '@angular/common/http';
+
+//Barra de progreso
+import { NgProgressModule } from '@ngx-progressbar/core';
+import { NgProgressHttpModule } from '@ngx-progressbar/http';
  
 @NgModule({
   declarations: [
@@ -16,7 +20,10 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     TemplateModule,
-    HttpClientModule
+    HttpClientModule,
+    //Barra de progreso
+    NgProgressModule.forRoot(),
+    NgProgressHttpModule.forRoot()
   ],
   providers: [
     
