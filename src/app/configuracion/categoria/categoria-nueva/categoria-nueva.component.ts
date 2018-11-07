@@ -5,13 +5,14 @@ import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Util } from '../../../util/util';
 import { Categoria } from '../../../acceso-datos/models/categoria';
-import { ItemData } from '../../../acceso-datos/util/item-data';
-import { Errorr } from '../../../acceso-datos/util/errorr';
-import { CodigoApp } from '../../../util/http/codigo-app';
+import { ItemData } from '../../../acceso-datos/util/entidades/item-data';
+import { Errorr } from '../../../acceso-datos/util/entidades/errorr';
+import { CodigoApp } from '../../../acceso-datos/util/codigo-app';
 import { SnackbarSuccessComponent } from '../../../template/snackbar/snackbar-success/snackbar-success.component';
 import { SnackbarErrorComponent } from '../../../template/snackbar/snackbar-error/snackbar-error.component';
 import { Subscription, Observable } from 'rxjs';
 import { DialogConfirmSimpleService } from '../../../util/services/dialog-confirm-simple.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categoria-nueva',
@@ -22,11 +23,14 @@ export class CategoriaNuevaComponent implements OnInit {
 
   accion = 'salvar';
   enviando: boolean = false;
+  //Errores de validacion 
   errores: Errorr = null;
+  ocurrioError: boolean = false;
+
   subscripSalvar: Subscription = null;
 
   categoriaForm = new FormGroup({
-    categoria: new FormControl('', [Validators.required, Validators.maxLength(5)])
+    categoria: new FormControl('', [Validators.required, Validators.maxLength(50)])
   });
 
 
@@ -50,14 +54,15 @@ export class CategoriaNuevaComponent implements OnInit {
         this.enviando = false;
 
         switch (data.codigo) {
-
           case CodigoApp.OK: {
             let categ = data.data as Categoria;
             this.errores = null;
-
-            this.snackBar.openFromComponent(SnackbarSuccessComponent, {
-              data: `${categ.categoria}`,
-              duration: Util.SNACKBAR_DURACION_OK,
+            this.ocurrioError = false;
+            setTimeout(() => {
+              this.snackBar.openFromComponent(SnackbarSuccessComponent, {
+                data: ['Se guardó correctamente la categoria:', categ.categoria],
+                duration: Util.SNACKBAR_DURACION_OK,
+              });
             });
             formDirective.resetForm();
             this.categoriaForm.reset();
@@ -68,28 +73,33 @@ export class CategoriaNuevaComponent implements OnInit {
             break;
           }
           case CodigoApp.ERROR_VALIDACION: {
-            this.errores = data.data as Errorr
+            this.errores = data.data as Errorr;
+            this.ocurrioError = false; //False pq errores de validacion no entra en errores generales 
             break;
           }
           case CodigoApp.ERROR_GENERAL: {//Ocurrio un error. Ver Servicio de este Modelo, throwError.
             let err = data.data as Errorr;
-            let msj = `Codigo de error-app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
-            console.log(msj);
-
-            this.snackBar.openFromComponent(SnackbarErrorComponent, {
-              data: msj,
-              duration: Util.SNACKBAR_DURACION_ERROR,
+            this.ocurrioError = true;
+            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            setTimeout(() => {
+              this.snackBar.openFromComponent(SnackbarErrorComponent, {
+                data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
+                duration: Util.SNACKBAR_DURACION_ERROR,
+              });
             });
             break;
           }
           default: {
             let err = data.data as Errorr;
-            let msj = `Codigo de error-app: Desconocido. Mensaje. ' + err._[0]`;
-            console.log(msj);
-            this.snackBar.openFromComponent(SnackbarErrorComponent, {
-              data: msj,
-              duration: Util.SNACKBAR_DURACION_ERROR,
-            });
+            this.ocurrioError = true;
+            let msj = `Codigo de error de la app: Desconocido. Mensaje. ${err._[0]}`;
+
+            setTimeout(() => {
+              this.snackBar.openFromComponent(SnackbarErrorComponent, {
+                data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
+                duration: Util.SNACKBAR_DURACION_ERROR,
+              });
+            })
             break;
           }
         }
@@ -123,9 +133,12 @@ export class CategoriaNuevaComponent implements OnInit {
    * ruta sino (False) se mantine en la ruta actual.
    */
   canDeactivate(): Observable<boolean> | boolean {
+    if (this.ocurrioError) {
+      this.snackBar.dismiss();
+    }
     if (this.enviando) {
       this.snackBar.open(
-        'No puede abandonar esta ventana pues se está guardando información. Cancele primero para navegar a otra ventana.',
+        'No puede abandonar esta ventana pues se está guardando información. Cancele esta operación primero para navegar a otra ventana.',
         'X',
         {
           duration: Util.SNACKBAR_DURACION_INFORMACION
@@ -133,21 +146,17 @@ export class CategoriaNuevaComponent implements OnInit {
       return false;
     }
     if (this.categoria.value && this.categoria.value.length) {
-      if (this.dialogConfirm.confirm('Descartar cambios?')) {
-        this.snackBar.dismiss(); //Oculta los sanckbar si se guardo y se navega a otra ruta
-        return true;
-      } else {
-        return false
-      }
+      return this.dialogConfirm.confirm("Si continua se perderán los cambios.\nDesea continuar?");
     }
-    this.snackBar.dismiss();
     return true;
   }
 
   cancelarEnvio() {
     this.enviando = false;
-    this.snackBar.dismiss();
 
+    // if (this.ocurrioError) {
+      this.snackBar.dismiss();
+    // }
     if (this.subscripSalvar) {
       this.subscripSalvar.unsubscribe();
     }

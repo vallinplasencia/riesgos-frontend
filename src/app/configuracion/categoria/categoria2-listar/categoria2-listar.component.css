@@ -1,0 +1,92 @@
+/* Structure */
+.example-container {
+    display: flex;
+    flex-direction: column;
+    /*max-height: 500px;*/
+    min-width: 300px;
+    position: relative;
+  }
+  
+  .example-header {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    padding-left: 24px;
+    font-size: 20px;
+  }
+  
+  .example-table {
+    overflow: auto;
+    min-height: 300px;
+  }
+  
+  .example-loading-shade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 56px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .example-rate-limit-reached {
+    color: #980000;
+    max-width: 360px;
+    text-align: center;
+  }
+
+  mat-row:hover{
+    background-color: rgba(0, 0, 0, 0.075);
+  }
+  
+  /*INI Filtrar*/
+  .example-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+  }
+  
+  .mat-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+  /*FIN Filtrar*/
+  
+
+  /* Column Widths */
+  .mat-column-numero{
+    font-weight: bold;
+    max-width: 55px;
+  }
+
+  .mat-column-acciones{
+    max-width: 170px;
+    justify-content: center;
+  }
+  
+  /* FIN Colums Widths*/
+  
+.mat-column-acciones a{
+  margin-right: 4px;
+}
+
+
+
+
+  /* .mat-column-costo, .mat-column-cantDias {
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;  
+  } */
+
+
+
+  
+  
+  /*********Otras cosas********/
+
+  
+  

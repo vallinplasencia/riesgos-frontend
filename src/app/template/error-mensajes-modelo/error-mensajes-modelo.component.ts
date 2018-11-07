@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Errorr } from '../../acceso-datos/util/errorr';
+import { Errorr } from '../../acceso-datos/util/entidades/errorr';
 
 @Component({
   selector: 'app-error-mensajes-modelo',
