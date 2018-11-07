@@ -1,8 +1,9 @@
 <div class="container">
-  <div [hidden]="enviando" class="mt-1">
-    <div class="card">
+  <div class="mt-1">
+    <div *ngIf="categoriaUpd" [hidden]="enviando" class="card">
       <h5 class="card-header">
-        Nueva Categoria.
+        Editar Categoria.
+        <strong>{{categoriaUpd.categoria|uppercase}}</strong>.
       </h5>
       <div class="card-body">
         <form [formGroup]="categoriaForm" (submit)="onSubmit(formDirectiva)" #formDirectiva="ngForm">
@@ -21,11 +22,8 @@
               <mat-icon>arrow_back</mat-icon> Cancelar
             </a>
             <div>
-              <button (click)="accion='salvar'" [disabled]="!categoriaForm.valid" mat-raised-button color="primary" type="submit" class="mr-2">
+              <button (click)="accion='salvar'" [disabled]="activarBotonSubmit()" mat-raised-button color="primary" type="submit" class="mr-2">
                 <mat-icon>save</mat-icon> Guardar
-              </button>
-              <button (click)="accion='salvarYnuevo'" [disabled]="!categoriaForm.valid" mat-raised-button color="primary" type="submit">
-                <mat-icon>save</mat-icon> Guardar y Nuevo
               </button>
             </div>
           </div>
@@ -33,9 +31,7 @@
       </div>
     </div>
 
-  </div>
-  <div [hidden]="!enviando" class="mt-1">
-    <div class="card">
+    <div *ngIf="categoriaUpd" [hidden]="!enviando" class="card">
       <h5 class="card-header">
         Guardando datos
       </h5>
@@ -46,6 +42,16 @@
         </dl>
         <button mat-stroked-button type="button" (click)="cancelarEnvio()">
           <mat-icon>arrow_back</mat-icon> Cancelar</button>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="!categoriaUpd">
+      <h5 class="card-header">
+        Problema
+      </h5>
+      <div class="card-body">
+        <p style="color: #980000;">Ocurrio un problema. Inténtelo mas tarde.</p>
+        <a routerLink="/">Ir a la página de inicio.</a>
       </div>
     </div>
   </div>

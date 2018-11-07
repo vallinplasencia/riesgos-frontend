@@ -1,11 +1,9 @@
 export class Urls {
-     /******URL donde se van a guardar y obtener los datos de la app.****/
      /**
       * URL donde se van a guardar y obtener los datos de la app.
       * 
       */
      public static readonly URL_APP = 'http://riesgos-backend.mii';
-    //  public static readonly URL_APP = 'http://github.com';
     
      /** 
       * URL donde se podran guardar los LOG (errores) de la app.
@@ -17,9 +15,22 @@ export class Urls {
       */
      public static readonly URL_LOG_APP = Urls.URL_APP;
 
-
-     /******************** URL PATH DE LA APP******************/
+     
      public static readonly CATEGORIA = 'api/categoria';
+
+
+
+
+    ///////////////////**************PARAMETROS DE LAS URLs********************///////////////////// 
+     
+    public static readonly PARAM_PAGINA = "_pagina";
+    public static readonly PARAM_LIMITE = "_limite";
+
+    public static readonly PARAM_ORDENAR_POR = "_ordenar";
+    public static readonly PARAM_ORDEN = "_orden";
+
+    public static readonly PARAM_FILTRO = "_filtro";
+
 
     /**
      * Retorna la url absoluta basada en la url BASE de la APP y el path que le 

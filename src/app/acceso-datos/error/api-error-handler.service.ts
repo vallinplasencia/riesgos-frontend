@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
-import { ItemData } from '../util/item-data';
-import { Errorr } from '../util/errorr';
+import { ItemData } from '../util/entidades/item-data';
+import { Errorr } from '../util/entidades/errorr';
 import { Util } from '../../util/util';
 
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
@@ -32,8 +32,6 @@ export class ApiErrorHandlerService {
    * 
    * @returns Observable<{}|T> - Objeto a retornar.
    */
-  
-
   handleError(serviceName = '', operation = 'operation', result = {} as ItemData<Errorr>) {
 
     return (error: HttpErrorResponse): Observable<ItemData<Errorr>> => {

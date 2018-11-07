@@ -21,8 +21,7 @@ $ cd riesgos-frontend
 $ npm install
 ```
 
-### Forma para correr y generar (run and build) el proyecto
-## Usage
+### Forma para correr y generar (run and build) el proyecto.
 
 ``` bash
 # Correr el servidor en desarrollo, se recargan automaticos los cambios, localhost:4200.
@@ -31,7 +30,7 @@ $ ng serve --open
 # Construir el proyecto para produccion
 $ ng build
 ```
-##LICENSE
+## LICENSE
 
 Esta aplicacion está bajo licencia [MIT license](https://opensource.org/licenses/MIT).
 

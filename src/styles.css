@@ -3,26 +3,63 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
 /*************** Contenedor ***************/
 .container{
     padding-right: 0;
     padding-left: 0;
 }
 /*************** FIN Contenedor ***************/
+
+
+
 /*************** Rutas ***************/
 .router-active{
     background-color: brown !important;
 }
 /*************** FIN Rutas ***************/
 
+
+/*************** Listados ***************/
+.listado.card-header{
+    padding: 0;
+}
+.listado.card-body{
+    padding: 0;
+}
+
+a.ver, a.editar, a.eliminar{
+    border: 1px solid;
+}
+a.ver{
+    color: #6c757d;
+}
+a.ver:hover, a.editar:hover, a.eliminar:hover{
+    background-color: #d4dbdb;
+}
+a.editar{
+    color: #007bff;
+}
+a.eliminar{
+    color: #dc3545;
+}
+
+/*************** FIN Listados ***************/
+
+
+
 /**************Sobreescribiendo estilos de bootstrap*************************/
 
 /*Botones con etiqueta <a>*/
 a[mat-stroked-button]:hover{
-    color:inherit;
+    /* color:inherit; */
     text-decoration: inherit;
 }
 a[mat-button]:hover {
     color:inherit;
+    text-decoration: inherit;
+}
+a[mat-raised-button]:hover{
+    /* color:inherit; */
     text-decoration: inherit;
 }

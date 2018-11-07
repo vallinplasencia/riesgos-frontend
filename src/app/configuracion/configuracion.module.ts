@@ -10,6 +10,9 @@ import { CategoriaListarComponent } from './categoria/categoria-listar/categoria
 import { ProcesoListarComponent } from './proceso/proceso-listar/proceso-listar.component';
 import { ResponsableListarComponent } from './responsable/responsable-listar/responsable-listar.component';
 import { TemplateModule } from '../template/template.module';
+import { Categoria2ListarComponent } from './categoria/categoria2-listar/categoria2-listar.component';
+import { CategoriaMostrarComponent } from './categoria/categoria-mostrar/categoria-mostrar.component';
+import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria-editar.component';
 
 @NgModule({
   imports: [
@@ -24,7 +27,9 @@ import { TemplateModule } from '../template/template.module';
     CategoriaNuevaComponent, 
     CategoriaListarComponent, 
     ProcesoListarComponent, 
-    ResponsableListarComponent
+    ResponsableListarComponent, 
+    Categoria2ListarComponent, 
+    CategoriaMostrarComponent, CategoriaEditarComponent
   ]
 })
 export class ConfiguracionModule { }

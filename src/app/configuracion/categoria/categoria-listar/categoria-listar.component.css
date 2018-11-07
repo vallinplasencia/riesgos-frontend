@@ -1,1 +1,86 @@
+/* Structure */
+.listado-container {
+  display: flex;
+  flex-direction: column;
+  /*max-height: 500px;*/
+  min-width: 300px;
+  position: relative;
+}
+
+.listado-header {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 8px 24px 0;
+  font-size: 20px;
+}
+
+.listado-table {
+  overflow: auto;
+  min-height: 300px;
+}
+
+.listado-loading-shade {
+  position: absolute;
+  top: 64px;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listado-rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}
+
+mat-row:hover{
+  background-color: rgba(0, 0, 0, 0.075);
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.mat-column-numero{
+  font-weight: bold;
+  max-width: 55px;
+}
+
+.mat-column-acciones{
+  max-width: 170px;
+  justify-content: center;
+}
+
+.mat-column-acciones a{
+  margin-right: 4px;
+}
+
+.sin-resultado {
+  text-align: center;
+}
+
+/*Para fijar la cabecera de la tabla. No me funciona en este tipo de tabla*/
+/* .mat-header-row {
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 9999;
+} */
+
+
+
+
+/* .mat-column-costo, .mat-column-cantDias {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;  
+} */
+
 
