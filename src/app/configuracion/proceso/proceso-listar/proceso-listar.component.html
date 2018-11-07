@@ -1,3 +1,92 @@
-<p>
-  proceso-listar works!
-</p>
+<div class="container mt-1">
+  <div class="card" [hidden]="eliminando">
+    <div class="card-header listado">
+      <div class="d-flex justify-content-between align-items-center m-2">
+        <h5>Listado de Procesos</h5>
+
+        <div>
+          <a mat-stroked-button class="mr-2" color="primary" (click)="refrescar($event)" [disabled]="isLoadingResults">
+            <mat-icon>refresh</mat-icon> Refrescar
+          </a>
+          <a mat-stroked-button color="primary" routerLink="/configuracion/proceso/nueva">
+            <mat-icon>add</mat-icon> Nueva proceso
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body listado">
+      <div class="listado-container mat-elevation-z8">
+
+        <div class="listado-loading-shade" *ngIf="isLoadingResults || ocurrioError">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+          <div class="listado-rate-limit-reached" *ngIf="ocurrioError">
+            Imposible cargar los datos. Ocurrió un error.Inténtelo mas tarde.
+          </div>
+        </div>
+
+        <div class="listado-header">
+          <mat-form-field>
+            <input matInput placeholder="Buscar procesos" #input (keyup)="filtrar(input.value)">
+          </mat-form-field>
+        </div>
+        <div class="sin-resultado" *ngIf="!ocurrioError && !isLoadingResults && !data.length">
+            <h5>No se encontraron resultados.</h5>
+          </div>
+        <mat-table [dataSource]="data" class="listado-table" matSort matSortActive="proceso" matSortDisableClear matSortDirection="asc">
+
+          <ng-container matColumnDef="numero">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let row; index as num">{{num+1}}</mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="proceso">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Proceso</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <a [routerLink]="['/configuracion/proceso/editar/', row.id]">{{row.proceso}}</a>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones">
+            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+            <mat-cell *matCellDef="let row;">
+              <a mat-icon-button [routerLink]="['/configuracion/proceso/editar/', row.id]" class="ver">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <a mat-icon-button [routerLink]="['/configuracion/proceso', row.id]" class="editar">
+                <mat-icon>visibility</mat-icon>
+              </a>
+              <a mat-icon-button (click)="confirmarEliminacion($event, row.id, row.proceso)" class="eliminar">
+                <mat-icon>delete</mat-icon>
+              </a>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
+        </mat-table>
+        
+
+        <mat-paginator [length]="totalItems" [pageSize]="opcsPageSize[0]" [pageSizeOptions]="opcsPageSize">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  <div [hidden]="!eliminando" class="mt-1">
+    <div class="card">
+      <h5 class="card-header">
+        Eliminando proceso
+      </h5>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-2 text-right">Proceso:</dt>
+          <dd class="col-sm-10">{{procesoAEliminar|uppercase}}</dd>
+        </dl>
+        <button mat-stroked-button type="button" (click)="cancelarEliminacion()">
+          <mat-icon>arrow_back</mat-icon> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- [hidden]="!isLoadingResults && !data.length" Oculta la tabla y el pagiador cuando no se encontraron resultados -->

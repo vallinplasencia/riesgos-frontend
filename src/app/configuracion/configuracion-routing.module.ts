@@ -12,42 +12,55 @@ import { CategoriaResolverService } from './categoria/categoria-resolver.service
 import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria-editar.component';
 
 const routes: Routes = [
-  { 
-    path: 'categoria', 
-    component: ConfiguracionComponent,
-    children: [  
-      { 
-        path: '', 
-        component: CategoriaListarComponent,
-        canDeactivate: [CanDeactivateGuard]
-       },
-      // { path: 'c2ategoria', component: Categoria2ListarComponent },      
-      { 
-        path: 'nueva', 
-        component: CategoriaNuevaComponent,
-        canDeactivate: [CanDeactivateGuard]
+  {
+    path: '',
+    children: [
+      {
+        path: 'categoria',
+        component: ConfiguracionComponent,
+        children: [
+          {
+            path: '',
+            component: CategoriaListarComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
+          // { path: 'c2ategoria', component: Categoria2ListarComponent },      
+          {
+            path: 'nueva',
+            component: CategoriaNuevaComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: 'editar/:id',
+            component: CategoriaEditarComponent,
+            canDeactivate: [CanDeactivateGuard],
+            resolve: {
+              itemData: CategoriaResolverService
+            }
+          },
+          {
+            path: ':id',
+            component: CategoriaMostrarComponent,
+            canDeactivate: [CanDeactivateGuard],
+            resolve: {
+              itemData: CategoriaResolverService
+            }
+          },
+        ]
       },
-      { 
-        path: 'editar/:id', 
-        component: CategoriaEditarComponent,
-        canDeactivate: [CanDeactivateGuard],
-        resolve:{
-          itemData: CategoriaResolverService
-        } 
-      },
-      { 
-        path: ':id', 
-        component: CategoriaMostrarComponent,
-        canDeactivate: [CanDeactivateGuard],
-        resolve:{
-          itemData: CategoriaResolverService
-        } 
-      },
-      { path: 'proceso', component: ProcesoListarComponent },
-      { path: 'responsable', component: ResponsableListarComponent },
-            
+      {
+        path: 'proceso',
+        component: ConfiguracionComponent,
+        children: [
+          {
+            path: '',
+            component: ProcesoListarComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
+        ]
+      }
     ]
-   }
+  },
 ];
 
 @NgModule({
