@@ -18,7 +18,7 @@ import { SnackbarSuccessComponent } from '../../../template/snackbar/snackbar-su
   templateUrl: './proceso-listar.component.html',
   styleUrls: ['./proceso-listar.component.css']
 })
-export class ProcesoListarComponent implements OnInit , AfterViewInit {
+export class ProcesoListarComponent implements OnInit, AfterViewInit {
 
   //Propiedades relacionadas con la tabla
   columnas: string[] = ['numero', 'proceso', 'acciones'];
@@ -82,7 +82,7 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.procesoRepo!.index(
-            0,
+            this.paginator.pageIndex,
             this.paginator.pageSize,
             this.sort.active,
             this.sort.direction,
@@ -103,6 +103,7 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
 
         this.data = [];
         this.totalItems = 0;
+        this.paginator.pageIndex = 0;
         return this.procesoRepo!.index(
           0,
           this.paginator.pageSize,
@@ -115,6 +116,11 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
 
   }
 
+  /**
+   * Metodo q se llama cuando se presiona el boton refrescar.
+   * Emite un valor vacio. Hace q se ejecute una nueva llamada a los datos desde el servidor. 
+   * @param event 
+   */
   refrescar(event) {
     event.preventDefault();
     this.ocurrioError = false;
@@ -125,10 +131,20 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
     this.refrescarClick.next();
   }
 
+  /**
+   * Metodo q se llama cuando se presiona una tecla en el input q filtra los datos de la tabla.
+   * Emite el texto q hay en el INPUT. Hace q se ejecute una nueva llamada a los datos desde el servidor. 
+   * @param cadena 
+   */
   filtrar(cadena: string) {
     this.filtarTermino.next(cadena);
   }
 
+  /**
+   * Metodo que se llama cada vez q hay un cambio en los datos a mostrar en la tabla.
+   * Llenando la fuente de datos de la tabla y manejando posibles errores q puedan ocurrir
+   * @param data 
+   */
   private onSubscribe(data: ItemData<Proceso[] | Errorr>) {
     this.isLoadingResults = false;
 
@@ -136,14 +152,22 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
       case CodigoApp.OK: {
         this.ocurrioError = false;
         this.totalItems = data.meta.total;
-        this.data = data.data as Proceso[];
+        // this.data = data.data as Proceso[];
+        let procesos = data.data as Proceso[];
+
+        if (!procesos.length && this.totalItems) {
+          //Si en la pagina actual de la tabla no tiene procesos pero hay paginas anteriores.Navego a la anterior 
+          this.paginator.previousPage();
+        } else {
+          this.data = data.data as Proceso[];
+        }
         break;
       }
       case CodigoApp.ERROR_GENERAL: {
         this.ocurrioError = true;
         this.data = [];
         this.totalItems = 0;
-
+        this.paginator.pageIndex = 0;
         let err = data.data as Errorr;
         let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
         setTimeout(() => {
@@ -157,9 +181,9 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
       default: {
         //Nunca debe de entrar aqui. Puse default por suiguir las normas.
         this.ocurrioError = true;
-        this.totalItems = 0;
         this.data = [];
         this.totalItems = 0;
+        this.paginator.pageIndex = 0;
         let msj = 'Código de error-app: Desconocido.';
         setTimeout(() => {
           this.snackBar.openFromComponent(SnackbarErrorComponent, {
@@ -174,7 +198,7 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
 
   confirmarEliminacion(event, id: number | string, proceso: string) {
     event.preventDefault();
-    this.dialogConfigm.confirm("Se eliminará permanentemente la proceso: " + proceso.toUpperCase() + ".\nDesea eliminarla de todos modos?.")
+    this.dialogConfigm.confirm("Se eliminará permanentemente el proceso: " + proceso.toUpperCase() + ".\nDesea eliminarla de todos modos?.")
       .subscribe((rta) => {
         if (rta) {
           this.procesoAEliminar = proceso;
@@ -198,13 +222,20 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
             this.ocurrioError = false;
             this.procesoAEliminar = null;
             let proc = data.data as Proceso;
-            this.data = this.data.filter((cc) => {
+            let procesos = this.data.filter((cc) => {
               return cc.id != proc.id;
             });
             this.totalItems = this.totalItems - 1;
+            
+            if (!procesos.length && this.totalItems) {
+              //Si en la pagina actual de la tabla no tiene procesos pero hay paginas anteriores.Navego a la anterior 
+              this.paginator.previousPage();
+            } else {
+              this.data = procesos;
+            }
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarSuccessComponent, {
-                data: ["Se eliminó correctamente la proceso: ", proc.proceso.toUpperCase()],
+                data: ["Se eliminó correctamente el proceso: ", proc.proceso.toUpperCase()],
                 duration: Util.SNACKBAR_DURACION_ERROR,
               });
             });
@@ -215,6 +246,7 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
             this.ocurrioError = true;
             this.data = [];
             this.totalItems = 0;
+            this.paginator.pageIndex = 0;
             let err = data.data as Errorr;
             let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
@@ -231,6 +263,7 @@ export class ProcesoListarComponent implements OnInit , AfterViewInit {
             this.ocurrioError = true;
             this.data = [];
             this.totalItems = 0;
+            this.paginator.pageIndex = 0;
             let msj = 'Código de error-app: Desconocido.';
 
             setTimeout(() => {

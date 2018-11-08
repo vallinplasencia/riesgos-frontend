@@ -15,6 +15,7 @@ import { CategoriaMostrarComponent } from './categoria/categoria-mostrar/categor
 import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria-editar.component';
 import { ProcesoMostrarComponent } from './proceso/proceso-mostrar/proceso-mostrar.component';
 import { ProcesoNuevoComponent } from './proceso/proceso-nuevo/proceso-nuevo.component';
+import { ProcesoEditarComponent } from './proceso/proceso-editar/proceso-editar.component';
 
 @NgModule({
   imports: [
@@ -31,7 +32,7 @@ import { ProcesoNuevoComponent } from './proceso/proceso-nuevo/proceso-nuevo.com
     ProcesoListarComponent, 
     ResponsableListarComponent, 
     Categoria2ListarComponent, 
-    CategoriaMostrarComponent, CategoriaEditarComponent, ProcesoMostrarComponent, ProcesoNuevoComponent
+    CategoriaMostrarComponent, CategoriaEditarComponent, ProcesoMostrarComponent, ProcesoNuevoComponent, ProcesoEditarComponent
   ]
 })
 export class ConfiguracionModule { }

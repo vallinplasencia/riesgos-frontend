@@ -28,7 +28,8 @@
         <a mat-button [routerLink]="[{outlets:{primary: 'activos', sidebar: ['activo']}}]" routerLinkActive="router-active">Activos</a>
         <a mat-button routerLink=".">Evaluación</a>
         <a mat-button routerLink=".">Riesgos</a>
-        <a mat-button [routerLink]="[{ outlets: { primary: 'configuracion/categoria',sidebar: ['configuracion'] } }]" routerLinkActive="router-active">Configuración</a>
+        <a mat-button [routerLink]="[{ outlets: { primary: 'configuracion/categoria', sidebar: ['configuracion'] } }]" [class.router-active]="aplicarClaseCss()">Configuración</a>
+        <!-- <a mat-button [routerLink]="[{ outlets: { primary: 'configuracion/categoria', sidebar: ['configuracion'] } }]" routerLinkActive="router-active">Configuración</a> -->
         <!-- <a routerLink="./responsable" routerLinkActive="router-active">Responsable</a> -->
       </div>
     </mat-toolbar>

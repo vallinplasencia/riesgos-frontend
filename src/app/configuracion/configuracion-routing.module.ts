@@ -13,6 +13,7 @@ import { CategoriaEditarComponent } from './categoria/categoria-editar/categoria
 import { ProcesoMostrarComponent } from './proceso/proceso-mostrar/proceso-mostrar.component';
 import { ProcesoResolverService } from './proceso/proceso-resolver.service';
 import { ProcesoNuevoComponent } from './proceso/proceso-nuevo/proceso-nuevo.component';
+import { ProcesoEditarComponent } from './proceso/proceso-editar/proceso-editar.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,14 @@ const routes: Routes = [
             path: 'nuevo',
             component: ProcesoNuevoComponent,
             canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: 'editar/:id',
+            component: ProcesoEditarComponent,
+            canDeactivate: [CanDeactivateGuard],
+            resolve: {
+              itemData: ProcesoResolverService
+            }
           },
           {
             path: ':id',

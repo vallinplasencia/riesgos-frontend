@@ -59,7 +59,7 @@ export class ProcesoNuevoComponent implements OnInit {
             this.ocurrioError = false;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarSuccessComponent, {
-                data: ['Se guardó correctamente la proceso:', proc.proceso],
+                data: ['Se guardó correctamente el proceso:', proc.proceso],
                 duration: Util.SNACKBAR_DURACION_OK,
               });
             });
@@ -117,10 +117,10 @@ export class ProcesoNuevoComponent implements OnInit {
    */
   getErrorMessage() {
     if (this.proceso.hasError('required')) {
-      return 'Proporcione un valor para la proceso.';
+      return 'Proporcione un valor para el proceso.';
     }
     if (this.proceso.hasError('maxlength')) {
-      return 'La proceso puede contener hasta 50 caracteres.';
+      return 'EL proceso puede contener hasta 50 caracteres.';
     }
   }
 

@@ -13,8 +13,6 @@ import { ItemData } from '../../../acceso-datos/util/entidades/item-data';
 import { DialogConfirmSimpleService } from '../../../util/services/dialog-confirm-simple.service';
 import { SnackbarSuccessComponent } from '../../../template/snackbar/snackbar-success/snackbar-success.component';
 
-
-
 @Component({
   selector: 'app-categoria-listar',
   templateUrl: './categoria-listar.component.html',
@@ -84,7 +82,7 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.categoriaRepo!.index(
-            0,
+            this.paginator.pageIndex,
             this.paginator.pageSize,
             this.sort.active,
             this.sort.direction,
@@ -105,6 +103,7 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
 
         this.data = [];
         this.totalItems = 0;
+        this.paginator.pageIndex = 0;
         return this.categoriaRepo!.index(
           0,
           this.paginator.pageSize,
@@ -117,6 +116,11 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
 
   }
 
+  /**
+   * Metodo q se llama cuando se presiona el boton refrescar.
+   * Emite un valor vacio. Hace q se ejecute una nueva llamada a los datos desde el servidor. 
+   * @param event 
+   */
   refrescar(event) {
     event.preventDefault();
     this.ocurrioError = false;
@@ -127,10 +131,20 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
     this.refrescarClick.next();
   }
 
+  /**
+   * Metodo q se llama cuando se presiona una tecla en el input q filtra los datos de la tabla.
+   * Emite el texto q hay en el INPUT. Hace q se ejecute una nueva llamada a los datos desde el servidor. 
+   * @param cadena 
+   */
   filtrar(cadena: string) {
     this.filtarTermino.next(cadena);
   }
 
+  /**
+   * Metodo que se llama cada vez q hay un cambio en los datos a mostrar en la tabla.
+   * Llenando la fuente de datos de la tabla y manejando posibles errores q puedan ocurrir
+   * @param data 
+   */
   private onSubscribe(data: ItemData<Categoria[] | Errorr>) {
     this.isLoadingResults = false;
 
@@ -138,14 +152,22 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
       case CodigoApp.OK: {
         this.ocurrioError = false;
         this.totalItems = data.meta.total;
-        this.data = data.data as Categoria[];
+        // this.data = data.data as Categoria[];
+        let categorias = data.data as Categoria[];
+
+        if (!categorias.length && this.totalItems) {
+          //Si en la pagina actual de la tabla no tiene categorias pero hay paginas anteriores.Navego a la anterior 
+          this.paginator.previousPage();
+        } else {
+          this.data = data.data as Categoria[];
+        }
         break;
       }
       case CodigoApp.ERROR_GENERAL: {
         this.ocurrioError = true;
         this.data = [];
         this.totalItems = 0;
-
+        this.paginator.pageIndex = 0;
         let err = data.data as Errorr;
         let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
         setTimeout(() => {
@@ -159,9 +181,9 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
       default: {
         //Nunca debe de entrar aqui. Puse default por suiguir las normas.
         this.ocurrioError = true;
-        this.totalItems = 0;
         this.data = [];
         this.totalItems = 0;
+        this.paginator.pageIndex = 0;
         let msj = 'Código de error-app: Desconocido.';
         setTimeout(() => {
           this.snackBar.openFromComponent(SnackbarErrorComponent, {
@@ -200,10 +222,17 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
             this.ocurrioError = false;
             this.categoriaAEliminar = null;
             let cat = data.data as Categoria;
-            this.data = this.data.filter((cc) => {
+            let categorias = this.data.filter((cc) => {
               return cc.id != cat.id;
             });
             this.totalItems = this.totalItems - 1;
+
+            if (!categorias.length && this.totalItems) {
+              //Si en la pagina actual de la tabla no tiene categorias pero hay paginas anteriores.Navego a la anterior 
+              this.paginator.previousPage();
+            } else {
+              this.data = categorias;
+            }
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarSuccessComponent, {
                 data: ["Se eliminó correctamente la categoria: ", cat.categoria.toUpperCase()],
@@ -217,6 +246,7 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
             this.ocurrioError = true;
             this.data = [];
             this.totalItems = 0;
+            this.paginator.pageIndex = 0;
             let err = data.data as Errorr;
             let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
@@ -233,6 +263,7 @@ export class CategoriaListarComponent implements OnInit, AfterViewInit {
             this.ocurrioError = true;
             this.data = [];
             this.totalItems = 0;
+            this.paginator.pageIndex = 0;
             let msj = 'Código de error-app: Desconocido.';
 
             setTimeout(() => {
