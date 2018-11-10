@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { Proceso } from '../../../acceso-datos/models/proceso';
+import { Responsable } from '../../../acceso-datos/models/responsable';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ItemData } from '../../../acceso-datos/util/entidades/item-data';
 import { Errorr } from '../../../acceso-datos/util/entidades/errorr';
@@ -9,18 +9,16 @@ import { MatSnackBar } from '@angular/material';
 import { Util } from '../../../util/util';
 import { Observable } from 'rxjs';
 import { DialogConfirmSimpleService } from '../../../util/services/dialog-confirm-simple.service';
-import { ProcesoService } from '../../../acceso-datos/repos/proceso.service';
+import { ResponsableService } from '../../../acceso-datos/repos/responsable.service';
 import { SnackbarSuccessComponent } from '../../../template/snackbar/snackbar-success/snackbar-success.component';
 
-
 @Component({
-  selector: 'app-proceso-mostrar',
-  templateUrl: './proceso-mostrar.component.html',
-  styleUrls: ['./proceso-mostrar.component.css']
+  selector: 'app-responsable-mostrar',
+  templateUrl: './responsable-mostrar.component.html',
+  styleUrls: ['./responsable-mostrar.component.css']
 })
-export class ProcesoMostrarComponent implements OnInit {
-
-  proceso: Proceso = null;
+export class ResponsableMostrarComponent implements OnInit {
+  responsable: Responsable = null;
   eliminando: boolean = false;
 
   private ocurrioError: boolean = false;
@@ -31,21 +29,21 @@ export class ProcesoMostrarComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     private dialogConfirm: DialogConfirmSimpleService,
-    private procesoRepo: ProcesoService
+    private responsableRepo: ResponsableService
   ) { }
 
   ngOnInit() {
     this.route.data
-      .subscribe((data: { itemData: ItemData<Proceso | Errorr> }) => {
+      .subscribe((data: { itemData: ItemData<Responsable | Errorr> }) => {
 
         switch (data.itemData.codigo) {
           case CodigoApp.OK: {
             this.ocurrioError = false;
-            this.proceso = data.itemData.data as Proceso;
+            this.responsable = data.itemData.data as Responsable;
             break;
           }
           case CodigoApp.ERROR_GENERAL: {
-            this.proceso = null;
+            this.responsable = null;
             let err = data.itemData.data as Errorr;
             this.ocurrioError = true;
             let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
@@ -60,7 +58,7 @@ export class ProcesoMostrarComponent implements OnInit {
           }
           default: {
             //Nunca debe de entrar aqui. Puse default por suiguir las normas.   
-            this.proceso = null;
+            this.responsable = null;
             this.ocurrioError = true;
             let msj = 'Código de error de la app: Desconocido.';
             setTimeout(() => {
@@ -75,10 +73,10 @@ export class ProcesoMostrarComponent implements OnInit {
       });
   }
 
-  confirmarEliminacion(event, id: number | string, proceso) {
+  confirmarEliminacion(event, id: number | string, responsable) {
     event.preventDefault();
     this.snackBar.dismiss();
-    this.dialogConfirm.confirm("Se eliminará permanentemente el proceso: " + proceso.toUpperCase() + ".\nDesea eliminarlo de todos modos?.")
+    this.dialogConfirm.confirm("Se le dará de baja permanentemente al responsable: " + responsable.toUpperCase() + ".\nDesea darle de baja de todos modos?.")
       .subscribe((rta) => {
         if (rta) {
           this.eliminar(id);
@@ -89,7 +87,7 @@ export class ProcesoMostrarComponent implements OnInit {
     this.eliminando = true;
     this.ocurrioError = false;
 
-    this.subscriptionEliminar = this.procesoRepo
+    this.subscriptionEliminar = this.responsableRepo
       .eliminar(id)
       .subscribe((data) => {
         this.eliminando = false;
@@ -97,14 +95,14 @@ export class ProcesoMostrarComponent implements OnInit {
         switch (data.codigo) {
           case CodigoApp.OK: {
             this.ocurrioError = false;
-            let proc = data.data as Proceso;
+            let resp = data.data as Responsable;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarSuccessComponent, {
-                data: ["Se eliminó correctamente el proceso: ", proc.proceso.toUpperCase()],
+                data: ["Se le dió de baja correctamente al responsable: ", resp.nombre.toUpperCase()],
                 duration: Util.SNACKBAR_DURACION_ERROR,
               });
             });
-            this.router.navigate(['/configuracion/proceso']);
+            this.router.navigate(['/configuracion/responsable']);
             break;
           }
           case CodigoApp.ERROR_GENERAL: {
@@ -153,7 +151,7 @@ export class ProcesoMostrarComponent implements OnInit {
     }
     if (this.eliminando) {
       this.snackBar.open(
-        'No puede abandonar esta ventana pues se está eliminando una proceso. Cancele primero esta operación para navegar a otra ventana.',
+        'No puede abandonar esta ventana pues se está dando de baja a un responsable. Cancele primero esta operación para navegar a otra ventana.',
         'X',
         {
           duration: Util.SNACKBAR_DURACION_INFORMACION

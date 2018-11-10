@@ -46,8 +46,30 @@
           <tr class="table-success">
             <td>Configuracion</td>
             <td>Categoria</td>
-            <td>Nueva categoria, Editar, Mostrar, Eliminar</td>
+            <td>
+              <a [routerLink]="[{ outlets: { primary: 'configuracion/categoria', sidebar: ['configuracion'] } }]">Nueva categoria, Listar, Editar, Mostrar, Eliminar, Buscar</a>
+            </td>
             <td>OK</td>
+          </tr>
+          <tr class="table-success">
+            <td>Configuracion</td>
+            <td>Proceso</td>
+            <td>
+              <a [routerLink]="[{ outlets: { primary: 'configuracion/proceso', sidebar: ['configuracion'] } }]">
+                Nuevo proceso, Listar, Editar, Mostrar, Eliminar, Buscar
+              </a>
+            </td>
+            <td>OK</td>
+          </tr>
+          <tr class="table-success">
+            <td>Configuracion</td>
+            <td>Responsables</td>
+            <td>
+              <a [routerLink]="[{ outlets: { primary: 'configuracion/responsable', sidebar: ['configuracion'] } }]">
+                Listar, Mostrar, Buscar
+              </a>
+            </td>
+            <td>En desarrollo</td>
           </tr>
           <tr>
             <td></td>

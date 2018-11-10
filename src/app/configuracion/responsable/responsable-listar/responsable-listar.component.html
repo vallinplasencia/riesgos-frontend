@@ -1,3 +1,136 @@
-<p>
-  responsable-listar works!
-</p>
+<div class="oio">
+<div class="container mt-1">
+  <div class="card" [hidden]="eliminando">
+    <div class="card-header listado">
+      <div class="d-flex justify-content-between align-items-center m-2">
+        <h5>Listado de Responsables</h5>
+
+        <div>
+          <a mat-stroked-button class="mr-2" color="primary" (click)="refrescar($event)" [disabled]="isLoadingResults">
+            <mat-icon>refresh</mat-icon> Refrescar
+          </a>
+          <a mat-stroked-button color="primary" routerLink="/configuracion/responsable/nuevo">
+            <mat-icon>add</mat-icon> Nuevo responsable
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="card-body listado">
+      <div class="listado-container mat-elevation-z8">
+
+        <div class="listado-loading-shade" *ngIf="isLoadingResults || ocurrioError">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+          <div class="listado-rate-limit-reached" *ngIf="ocurrioError">
+            Imposible cargar los datos. Ocurrió un error.Inténtelo mas tarde.
+          </div>
+        </div>
+
+        <div class="listado-header">
+          <mat-form-field>
+            <input matInput placeholder="Buscar responsables por Nombre y/o Área" #input (keyup)="filtrar(input.value)">
+          </mat-form-field>
+        </div>
+        <div class="sin-resultado" *ngIf="!ocurrioError && !isLoadingResults && !data.length">
+            <h5>No se encontraron resultados.</h5>
+          </div>
+         <div class="table-responsive">
+        <mat-table [dataSource]="data" class="listado-table" matSort matSortActive="nombre" matSortDisableClear matSortDirection="asc">
+
+          <ng-container matColumnDef="numero">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let row; index as num">{{num+1}}</mat-cell>
+          </ng-container>
+
+
+          <ng-container matColumnDef="nombre" sticky>
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isLoadingResults">Nombre</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <a [routerLink]="['/configuracion/responsable/editar/', row.id]">{{row.nombre}}</a>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="funcion">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isLoadingResults">Función</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.funcion}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="area">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isLoadingResults">Área</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+             {{row.area}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="direccion">
+            <mat-header-cell *matHeaderCellDef>Dirección</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.direccion}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isLoadingResults">Email</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.email}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="fechaAlta">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isLoadingResults">Alta</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.fechaAlta|date:'d - MMM - yyyy':'':'es-AR'}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="fechaBaja">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [disabled]="isLoadingResults">Baja</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{row.fechaBaja ? (row.fechaBaja|date:'d - MMM - yyyy':'':'es-AR') : '-'}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="acciones" stickyEnd>
+            <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+            <mat-cell *matCellDef="let row;">
+              <a mat-icon-button [routerLink]="['/configuracion/responsable/editar/', row.id]" class="ver">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <a mat-icon-button [routerLink]="['/configuracion/responsable', row.id]" class="editar">
+                <mat-icon>visibility</mat-icon>
+              </a>
+              <a mat-icon-button (click)="confirmarEliminacion($event, row.id, row.nombre)" class="eliminar">
+                <mat-icon>delete</mat-icon>
+              </a>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="columnas; sticky: true"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
+        </mat-table>
+      </div>
+
+        <mat-paginator [length]="totalItems" [pageSize]="opcsPageSize[0]" [pageSizeOptions]="opcsPageSize">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+  <div [hidden]="!eliminando" class="mt-1">
+    <div class="card">
+      <h5 class="card-header">
+        Eliminando responsable
+      </h5>
+      <div class="card-body">
+        <dl class="row">
+          <dt class="col-sm-2 text-right">Responsable:</dt>
+          <dd class="col-sm-10">{{responsableAEliminar|uppercase}}</dd>
+        </dl>
+        <button mat-stroked-button type="button" (click)="cancelarEliminacion()">
+          <mat-icon>arrow_back</mat-icon> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- [hidden]="!isLoadingResults && !data.length" Oculta la tabla y el pagiador cuando no se encontraron resultados -->

@@ -18,6 +18,7 @@ export class Urls {
      
      public static readonly CATEGORIA = 'api/categoria';
      public static readonly PROCESO = 'api/proceso';
+     public static readonly RESPONSABLE = 'api/responsable';
 
 
 

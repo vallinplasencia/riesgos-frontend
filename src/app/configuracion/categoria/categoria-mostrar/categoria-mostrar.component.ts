@@ -47,7 +47,7 @@ export class CategoriaMostrarComponent implements OnInit {
             this.categoria = null;
             let err = data.itemData.data as Errorr;
             this.ocurrioError = true;
-            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
 
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
@@ -61,7 +61,7 @@ export class CategoriaMostrarComponent implements OnInit {
             //Nunca debe de entrar aqui. Puse default por suiguir las normas.   
             this.categoria = null;
             this.ocurrioError = true;
-            let msj = 'Codigo de error de la app: Desconocido.';
+            let msj = 'Código de error de la app: Desconocido.';
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
@@ -110,7 +110,7 @@ export class CategoriaMostrarComponent implements OnInit {
             this.ocurrioError = true;
 
             let err = data.data as Errorr;
-            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
@@ -122,7 +122,7 @@ export class CategoriaMostrarComponent implements OnInit {
           default: {
             //Nunca debe de entrar aqui. Puse default por suiguir las normas.
             this.ocurrioError = true;
-            let msj = 'Codigo de error de la app: Desconocido.';
+            let msj = 'Código de error de la app: Desconocido.';
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],

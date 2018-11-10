@@ -89,7 +89,7 @@ export class Categoria2ListarComponent implements OnInit, AfterViewInit {
           case CodigoApp.ERROR_GENERAL: {//Ocurrio un error. Ver Servicio de este Modelo, throwError.
             this.error = true;
             let err = data.data as Errorr;
-            let msj = `${err._[0]}. Codigo de error-app: ${CodigoApp.ERROR_GENERAL}. `;
+            let msj = `${err._[0]}. Código de error-app: ${CodigoApp.ERROR_GENERAL}. `;
             this.snackBar.openFromComponent(SnackbarErrorComponent, {
               data: msj,
               duration: Util.SNACKBAR_DURACION_ERROR,
@@ -99,7 +99,7 @@ export class Categoria2ListarComponent implements OnInit, AfterViewInit {
           default: {
             //Nunca debe de entrar aqui. Puse default por suiguir las normas.
             this.error = true;
-            let msj = 'Ocurrio un problema. Intentelo mas tarde. Codigo de error-app: Desconocido.';
+            let msj = 'Ocurrió un problema. Intentelo mas tarde. Código de error-app: Desconocido.';
             this.snackBar.openFromComponent(SnackbarErrorComponent, {
               data: msj,
               duration: Util.SNACKBAR_DURACION_ERROR,

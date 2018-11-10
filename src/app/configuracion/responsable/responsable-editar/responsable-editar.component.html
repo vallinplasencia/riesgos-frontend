@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="mt-1">
+      <div *ngIf="responsableUpd" [hidden]="enviando" class="card">
+        <h5 class="card-header">
+          Editar Responsable.
+          <strong>{{responsableUpd.nombre|uppercase}}</strong>.
+        </h5>
+        <div class="card-body">
+          <form [formGroup]="responsableForm" (submit)="onSubmit(formDirectiva)" #formDirectiva="ngForm">
+            <app-error-mensajes-modelo *ngIf="errores" [errores]="errores"></app-error-mensajes-modelo>
+            <div class="row">
+              <!-- <div class="col-6">
+                <mat-form-field>
+                  <input matInput formControlName="nombre" autocomplete="off" type="text" placeholder="Nombre">
+                  <mat-error *ngIf="nombre.invalid">{{getErrorMessage('nombre')}}</mat-error>
+                </mat-form-field>
+              </div> -->
+              <div class="col-6">
+                  <mat-form-field>
+                    <input matInput formControlName="nombre" type="text" placeholder="Nombre" required maxlength="100">
+                    <mat-error *ngIf="nombre.invalid">{{getErrorMessage('nombre')}}</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-6">
+                  <mat-form-field>
+                    <input matInput formControlName="funcion" type="text" placeholder="Función" required maxlength="70">
+                    <mat-error *ngIf="funcion.invalid">{{getErrorMessage('funcion')}}</mat-error>
+                  </mat-form-field>
+                </div>
+    
+                <div class="col-6">
+                  <mat-form-field>
+                    <input matInput formControlName="area" type="text" placeholder="Área" required maxlength="70">
+                    <mat-error *ngIf="area.invalid">{{getErrorMessage('area')}}</mat-error>
+                  </mat-form-field>
+                </div>
+    
+                <div class="col-6">
+                  <mat-form-field>
+                    <input matInput formControlName="email" type="text" placeholder="Correo Electrónico" required maxlength="100">
+                    <mat-error *ngIf="email.invalid">{{getErrorMessage('email')}}</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-6">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker" formControlName="fechaAlta" placeholder="Fecha de alta" required>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                      <mat-error *ngIf="fechaAlta.invalid">{{getErrorMessage('fechaAlta')}}</mat-error>
+                    </mat-form-field>
+{{fechaAlta.value}}
+                    <!-- <mat-form-field>
+                        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                      </mat-form-field> -->
+                  </div>
+
+                <div class="col-6">
+                  <mat-form-field>
+                    <textarea matInput formControlName="direccion" placeholder="Dirección" required maxlength="100"></textarea>
+                    <mat-error *ngIf="direccion.invalid">{{getErrorMessage('direccion')}}</mat-error>
+                  </mat-form-field>
+                </div>
+            </div>
+  
+            <div class="d-flex justify-content-between mt-3">
+              <a mat-stroked-button routerLink="/configuracion/responsable">
+                <mat-icon>arrow_back</mat-icon> Cancelar
+              </a>
+              <div>
+                <button (click)="accion='salvar'" [disabled]="activarBotonSubmit()" mat-raised-button color="primary" type="submit" class="mr-2">
+                  <mat-icon>save</mat-icon> Guardar
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+  
+      <div *ngIf="responsableUpd" [hidden]="!enviando" class="card">
+        <h5 class="card-header">
+          Guardando datos
+        </h5>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Nombre:</dt>
+            <dd class="col-sm-10">{{nombre.value}}</dd>
+          </dl>
+          <button mat-stroked-button type="button" (click)="cancelarEnvio()">
+            <mat-icon>arrow_back</mat-icon> Cancelar</button>
+        </div>
+      </div>
+  
+      <div class="card" *ngIf="!responsableUpd">
+        <h5 class="card-header">
+          Problema
+        </h5>
+        <div class="card-body">
+          <p style="color: #980000;">Ocurrió un problema. Inténtelo mas tarde.</p>
+          <a routerLink="/">Ir a la página de inicio.</a>
+        </div>
+      </div>
+    </div>
+  </div>

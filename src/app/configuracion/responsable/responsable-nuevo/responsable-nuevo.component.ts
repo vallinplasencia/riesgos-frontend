@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators, FormGroup, FormGroupDirective } from '@angular/forms';
-import { ProcesoService } from '../../../acceso-datos/repos/proceso.service';
+import { FormControl, Validators, FormGroup, FormGroupDirective, FormBuilder } from '@angular/forms';
+import { ResponsableService } from '../../../acceso-datos/repos/responsable.service';
 import { MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Util } from '../../../util/util';
-import { Proceso } from '../../../acceso-datos/models/proceso';
+import { Responsable } from '../../../acceso-datos/models/responsable';
 import { ItemData } from '../../../acceso-datos/util/entidades/item-data';
 import { Errorr } from '../../../acceso-datos/util/entidades/errorr';
 import { CodigoApp } from '../../../acceso-datos/util/codigo-app';
@@ -15,11 +15,12 @@ import { DialogConfirmSimpleService } from '../../../util/services/dialog-confir
 import { tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-proceso-nuevo',
-  templateUrl: './proceso-nuevo.component.html',
-  styleUrls: ['./proceso-nuevo.component.css']
+  selector: 'app-responsable-nuevo',
+  templateUrl: './responsable-nuevo.component.html',
+  styleUrls: ['./responsable-nuevo.component.css']
 })
-export class ProcesoNuevoComponent implements OnInit {
+export class ResponsableNuevoComponent implements OnInit {
+
   accion = 'salvar';
   enviando: boolean = false;
   //Errores de validacion 
@@ -28,15 +29,28 @@ export class ProcesoNuevoComponent implements OnInit {
 
   subscripSalvar: Subscription = null;
 
-  procesoForm = new FormGroup({
-    proceso: new FormControl('', [Validators.required, Validators.maxLength(50)])
+  responsableForm = this.fb.group({
+    nombre: ['', [Validators.required, Validators.maxLength(100)]],
+    funcion : ['', [Validators.required, Validators.maxLength(70)]],
+    area: ['', [Validators.required, Validators.maxLength(70)]],
+    direccion: ['', [Validators.required, Validators.maxLength(100)]],
+    email: ['', [Validators.required, Validators.maxLength(100), Validators.email]]
   });
+
+  // responsableForm = this.fb.group({
+  //   nombre: ['', [Validators.required, Validators.maxLength(2)]],
+  //   funcion : ['', [Validators.required, Validators.maxLength(2)]],
+  //   area: ['', [Validators.required, Validators.maxLength(2)]],
+  //   direccion: ['', [Validators.required, Validators.maxLength(2)]],
+  //   email: ['', [Validators.required, Validators.maxLength(6), Validators.email]]
+  // });
 
 
   constructor(
     private router: Router,
+    private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private repo: ProcesoService,
+    private repo: ResponsableService,
     private dialogConfirm: DialogConfirmSimpleService
   ) { }
 
@@ -48,26 +62,26 @@ export class ProcesoNuevoComponent implements OnInit {
     this.snackBar.dismiss();
 
     this.subscripSalvar = this.repo
-      .salvar(this.procesoForm.value)
+      .salvar(this.responsableForm.value)
       .subscribe(data => {
         this.enviando = false;
 
         switch (data.codigo) {
           case CodigoApp.OK: {
-            let proc = data.data as Proceso;
+            let resp = data.data as Responsable;
             this.errores = null;
             this.ocurrioError = false;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarSuccessComponent, {
-                data: ['Se guardó correctamente el proceso:', proc.proceso],
+                data: ['Se guardó correctamente el responsable:', resp.nombre],
                 duration: Util.SNACKBAR_DURACION_OK,
               });
             });
             formDirective.resetForm();
-            this.procesoForm.reset();
+            this.responsableForm.reset();
 
             if (this.accion == 'salvar') {
-              this.router.navigate(['/configuracion/proceso']);
+              this.router.navigate(['/configuracion/responsable']);
             }
             break;
           }
@@ -105,23 +119,65 @@ export class ProcesoNuevoComponent implements OnInit {
       });
   }
 
-  /**
-   * Retorna el campo proceso(FormControl)
-   */
-  get proceso() {
-    return this.procesoForm.get('proceso');
-  }
+
 
   /**
-   * Retorna el mensaje de error asociado al campo q no cumpla
+   * Retorna el mensaje de error asociado con el campo q no cumpla las reglas de validacion
    */
-  getErrorMessage() {
-    if (this.proceso.hasError('required')) {
-      return 'Proporcione un valor para el proceso.';
+  getErrorMessage(campo: string) {
+    
+    switch (campo) {
+      case 'nombre': {
+        if (this.nombre.hasError('required')) {
+          return 'Proporcione un valor para el nombre.';
+        }
+        if (this.nombre.hasError('maxlength')) {
+          
+          return 'El nombre puede contener hasta 100 caracteres.';
+        }
+        break;
+      }
+      case 'funcion': {
+        if (this.funcion.hasError('required')) {
+          return "Proporcione un valor para el campo función.";
+        }
+        if (this.funcion.hasError('maxlength')) {
+          return 'El campo función puede contener hasta 70 caracteres.';
+        }
+        break;
+      }
+      case 'area': {
+        if (this.area.hasError('required')) {
+          return 'Proporcione un valor para el campo área.';
+        }
+        if (this.area.hasError('maxlength')) {
+          return 'El campo área puede contener hasta 70 caracteres.';
+        }
+        break;
+      }
+      case 'direccion': {
+        if (this.direccion.hasError('required')) {
+          return 'Proporcione un valor para el campo dirección.';
+        }
+        if (this.direccion.hasError('maxlength')) {
+          return 'El campo dirección puede contener hasta 100 caracteres.';
+        }
+        break;
+      }
+      case 'email': {
+        if (this.email.hasError('required')) {
+          return 'Proporcione un valor para el correo electrónico.';
+        }
+        if (this.email.hasError('maxlength')) {
+          return 'El correo electrónico puede contener hasta 100 caracteres.';
+        }
+        if (this.email.hasError('email')) {
+          return 'El campo email tiene que ser un correo electrónico válido.';
+        }
+        break;
+      }
     }
-    if (this.proceso.hasError('maxlength')) {
-      return 'EL proceso puede contener hasta 50 caracteres.';
-    }
+
   }
 
   /**
@@ -144,7 +200,7 @@ export class ProcesoNuevoComponent implements OnInit {
         });
       return false;
     }
-    if (this.proceso.value && this.proceso.value.length) {
+    if (this.nombre.value && this.nombre.value.length) {
       return this.dialogConfirm.confirm("Si continua se perderán los cambios.\nDesea continuar?");
     }
     return true;
@@ -154,11 +210,38 @@ export class ProcesoNuevoComponent implements OnInit {
     this.enviando = false;
 
     // if (this.ocurrioError) {
-      this.snackBar.dismiss();
+    this.snackBar.dismiss();
     // }
     if (this.subscripSalvar) {
       this.subscripSalvar.unsubscribe();
     }
   }
 
+  /**
+   * Retorna el campo responsable(FormControl)
+   */
+  get nombre() {
+    return this.responsableForm.get('nombre');
+  }
+  get funcion() {
+    return this.responsableForm.get('funcion');
+  }
+  get area() {
+    return this.responsableForm.get('area');
+  } 
+  get direccion() {
+    return this.responsableForm.get('direccion');
+  } 
+  get email() {
+    return this.responsableForm.get('email');
+  } 
+  // get fechaAlta() {
+  //   return this.responsableForm.get('fechaAlta');
+  // } 
+  // get fechaBaja() {
+  //   return this.responsableForm.get('fechaBaja');
+  // }
+  // get (){
+  //   return this.responsableForm.get('');
+  // }
 }

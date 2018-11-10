@@ -169,7 +169,7 @@ export class ProcesoListarComponent implements OnInit, AfterViewInit {
         this.totalItems = 0;
         this.paginator.pageIndex = 0;
         let err = data.data as Errorr;
-        let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+        let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
         setTimeout(() => {
           this.snackBar.openFromComponent(SnackbarErrorComponent, {
             data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
@@ -248,7 +248,7 @@ export class ProcesoListarComponent implements OnInit, AfterViewInit {
             this.totalItems = 0;
             this.paginator.pageIndex = 0;
             let err = data.data as Errorr;
-            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde. ', msj],

@@ -1,0 +1,91 @@
+<div class="container">
+    <div class="mt-1">
+      <div class="card" *ngIf="responsable" [hidden]="eliminando">
+        <h5 class="card-header">
+          Datos de <strong>{{responsable.nombre|uppercase}}</strong>.
+        </h5>
+        <div class="card-body">
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Nombre:</dt>
+            <dd class="col-sm-10">{{responsable.nombre}}</dd>
+          </dl>
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Funición:</dt>
+            <dd class="col-sm-10">{{responsable.funcion}}</dd>
+          </dl>
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Área:</dt>
+            <dd class="col-sm-10">{{responsable.area}}</dd>
+          </dl>
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Dirección:</dt>
+            <dd class="col-sm-10">{{responsable.direccion}}</dd>
+          </dl>
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Email:</dt>
+            <dd class="col-sm-10">{{responsable.email}}</dd>
+          </dl>
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Fecha de alta:</dt>
+            <dd class="col-sm-10">{{responsable.fechaAlta|date:'d - MMMM - yyyy':'':'es-AR' }}</dd>
+          </dl>
+  
+          <dl class="row">
+            <dt class="col-sm-2 text-right">Fecha de baja:</dt>
+            <dd class="col-sm-10">
+                {{ responsable.fechaBaja ? (responsable.fechaBaja|date:'d - MMMM - yyyy':'':'es-AR') : 'No se le a dado la baja' }}
+            </dd>
+          </dl>
+          <div class="d-flex justify-content-end">
+            <a mat-stroked-button class="mr-2" color="primary" [routerLink]="['/configuracion/responsable/editar', responsable.id]">
+              <mat-icon>edit</mat-icon> Editar
+            </a>
+            <a  mat-stroked-button class="eliminar mr-2" (click)="confirmarEliminacion($event, responsable.id, responsable.nombre)">
+              <mat-icon>delete</mat-icon> Baja
+            </a>
+            <a mat-raised-button color="primary" routerLink="/configuracion/responsable">
+              <mat-icon>check</mat-icon> Aceptar
+            </a>
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="responsable" [hidden]="!eliminando" class="card">
+        <h5 class="card-header">
+          Eliminado responsable.
+        </h5>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-sm-2 text-right">nombre:</dt>
+            <dd class="col-sm-10">{{responsable.nombre}}</dd>
+          </dl>
+          <dl class="row">
+              <dt class="col-sm-2 text-right">Función:</dt>
+              <dd class="col-sm-10">{{responsable.funcion}}</dd>
+            </dl>
+            <dl class="row">
+                <dt class="col-sm-2 text-right">Área:</dt>
+                <dd class="col-sm-10">{{responsable.area}}</dd>
+              </dl>
+          <button mat-stroked-button type="button" (click)="cancelarEliminacion()">
+            <mat-icon>arrow_back</mat-icon> Cancelar</button>
+        </div>
+      </div>
+  
+      <div class="card" *ngIf="!responsable">
+        <h5 class="card-header">
+          Problema
+        </h5>
+        <div class="card-body">
+          <p style="color: #980000;">Ocurrió un problema. Inténtelo mas tarde.</p>
+          <a routerLink="/">Ir a la página de inicio.</a>
+        </div>
+      </div>
+    </div>
+  </div>

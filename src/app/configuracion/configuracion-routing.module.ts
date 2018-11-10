@@ -14,6 +14,10 @@ import { ProcesoMostrarComponent } from './proceso/proceso-mostrar/proceso-mostr
 import { ProcesoResolverService } from './proceso/proceso-resolver.service';
 import { ProcesoNuevoComponent } from './proceso/proceso-nuevo/proceso-nuevo.component';
 import { ProcesoEditarComponent } from './proceso/proceso-editar/proceso-editar.component';
+import { ResponsableMostrarComponent } from './responsable/responsable-mostrar/responsable-mostrar.component';
+import { ResponsableResolverService } from './responsable/responsable-resolver.service';
+import { ResponsableNuevoComponent } from './responsable/responsable-nuevo/responsable-nuevo.component';
+import { ResponsableEditarComponent } from './responsable/responsable-editar/responsable-editar.component';
 
 const routes: Routes = [
   {
@@ -80,6 +84,38 @@ const routes: Routes = [
             canDeactivate: [CanDeactivateGuard],
             resolve: {
               itemData: ProcesoResolverService
+            }
+          },
+        ]
+      },
+      {
+        path: 'responsable',
+        component: ConfiguracionComponent,
+        children: [
+          {
+            path: '',
+            component: ResponsableListarComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: 'nuevo',
+            component: ResponsableNuevoComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: 'editar/:id',
+            component: ResponsableEditarComponent,
+            canDeactivate: [CanDeactivateGuard],
+            resolve: {
+              itemData: ResponsableResolverService
+            }
+          },
+          {
+            path: ':id',
+            component: ResponsableMostrarComponent,
+            canDeactivate: [CanDeactivateGuard],
+            resolve: {
+              itemData: ResponsableResolverService
             }
           },
         ]

@@ -80,7 +80,7 @@ export class CategoriaNuevaComponent implements OnInit {
           case CodigoApp.ERROR_GENERAL: {//Ocurrio un error. Ver Servicio de este Modelo, throwError.
             let err = data.data as Errorr;
             this.ocurrioError = true;
-            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
@@ -92,7 +92,7 @@ export class CategoriaNuevaComponent implements OnInit {
           default: {
             let err = data.data as Errorr;
             this.ocurrioError = true;
-            let msj = `Codigo de error de la app: Desconocido. Mensaje. ${err._[0]}`;
+            let msj = `Código de error de la app: Desconocido. Mensaje. ${err._[0]}`;
 
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {

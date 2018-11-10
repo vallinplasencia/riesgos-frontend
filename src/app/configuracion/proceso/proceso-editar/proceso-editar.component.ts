@@ -58,7 +58,7 @@ export class ProcesoEditarComponent implements OnInit {
             this.ocurrioError = true;
             this.procesoUpd = null;
             let err = data.itemData.data as Errorr;
-            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrio un problema. Inténtelo mas tarde.', msj],
@@ -71,7 +71,7 @@ export class ProcesoEditarComponent implements OnInit {
             //Nunca debe de entrar aqui. Puse default por sueguir las normas. 
             this.ocurrioError = true;
             this.procesoUpd = null;
-            let msj = 'Codigo de error-app: Desconocido.';
+            let msj = 'Código de error-app: Desconocido.';
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrio un problema. Inténtelo mas tarde.', msj],
@@ -120,7 +120,7 @@ export class ProcesoEditarComponent implements OnInit {
           case CodigoApp.ERROR_GENERAL: {//Ocurrio un error. Ver Servicio de este Modelo, throwError.
             this.ocurrioError = true;
             let err = data.data as Errorr;
-            let msj = `Codigo de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
+            let msj = `Código de error de la app: ${CodigoApp.ERROR_GENERAL}. ${err._[0]}`;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
@@ -132,7 +132,7 @@ export class ProcesoEditarComponent implements OnInit {
           default: {
             this.ocurrioError = true;
             let err = data.data as Errorr;
-            let msj = `Codigo de error de la app: Desconocido. Mensaje. ${err._[0]}`;
+            let msj = `Código de error de la app: Desconocido. Mensaje. ${err._[0]}`;
             setTimeout(() => {
               this.snackBar.openFromComponent(SnackbarErrorComponent, {
                 data: ['Ocurrió un problema. Inténtelo mas tarde.', msj],
