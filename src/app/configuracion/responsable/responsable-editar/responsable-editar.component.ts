@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDatepickerInputEvent } from '@angular/material';
 import { ItemData } from '../../../acceso-datos/util/entidades/item-data';
 import { Responsable } from '../../../acceso-datos/models/responsable';
 import { Errorr } from '../../../acceso-datos/util/entidades/errorr';
@@ -13,10 +13,23 @@ import { ResponsableService } from '../../../acceso-datos/repos/responsable.serv
 import { SnackbarSuccessComponent } from '../../../template/snackbar/snackbar-success/snackbar-success.component';
 import { DialogConfirmSimpleService } from '../../../util/services/dialog-confirm-simple.service';
 
+
+
+// Depending on whether rollup is used, moment needs to be imported differently.
+// Since Moment.js doesn't have a default export, we normally need to import using the `* as`
+// syntax. However, rollup creates a synthetic default module and we thus need to import it using
+// the `default as` syntax.
+import * as _moment from 'moment';
+// tslint:disable-next-line:no-duplicate-imports
+// import {default as _rollupMoment} from 'moment';
+// const moment = _rollupMoment || _moment;
+const moment = _moment;
+
 @Component({
   selector: 'app-responsable-editar',
   templateUrl: './responsable-editar.component.html',
-  styleUrls: ['./responsable-editar.component.css']
+  styleUrls: ['./responsable-editar.component.css'],
+  
 })
 export class ResponsableEditarComponent implements OnInit {
 
@@ -28,8 +41,10 @@ export class ResponsableEditarComponent implements OnInit {
     area: ['', [Validators.required, Validators.maxLength(70)]],
     direccion: ['', [Validators.required, Validators.maxLength(100)]],
     email: ['', [Validators.required, Validators.maxLength(100), Validators.email]],
-    fechaAlta: ['', [Validators.required]],
-    fechaBaja: ['']
+    //disabled se hace para desactivar el input q te obliga a seleccionar una fecha desde el dialog
+    //Esto lo recomienda angular hacerlo de esta forma.
+    fechaAlta: [{value: '', disabled: true}, [Validators.required]],
+    fechaBaja: [{value: '', disabled: true}]
   });
 
   enviando: boolean = false;
@@ -59,19 +74,16 @@ export class ResponsableEditarComponent implements OnInit {
             
             this.ocurrioError = false;
             this.responsableUpd = data.itemData.data as Responsable;
-            let fa = new Date(this.responsableUpd.fechaAlta);
-            this.responsableForm.patchValue({
+            
+            this.responsableForm.setValue({
               nombre: this.responsableUpd.nombre,
               funcion: this.responsableUpd.funcion,
               area: this.responsableUpd.area,
               direccion: this.responsableUpd.direccion,
               email: this.responsableUpd.email,
-              fechaAlta: fa,
-              fechaBaja: this.responsableUpd.fechaBaja,
+              fechaAlta: moment(this.responsableUpd.fechaAlta),
+              fechaBaja: moment(this.responsableUpd.fechaBaja),
             });
-            let xx = new Date('2018-10-24 GMT-4');
-console.log('fa: '+ fa);
-console.log('xx: ' + xx);
             break;
           }
           case CodigoApp.ERROR_GENERAL: {
@@ -109,13 +121,19 @@ console.log('xx: ' + xx);
     this.errores = null;
     this.enviando = true;
     this.snackBar.dismiss();
-
+    
+    let dataSalvar = this.responsableForm.value;
+    dataSalvar.fechaAlta = this.fechaAlta.value.format('YYYY-MM-DD');
+    
+    if(this.fechaBaja.value.isValid()){
+      dataSalvar.fechaBaja = this.fechaBaja.value.format('YYYY-MM-DD');
+    }
     this.subscripSalvar = this.responsableRepo
-      .salvar(this.responsableForm.value, this.responsableUpd.id)
+      .salvar(dataSalvar, this.responsableUpd.id)
       .subscribe(data => {
         this.enviando = false;
-        switch (data.codigo) {
 
+        switch (data.codigo) {
           case CodigoApp.OK: {
             let resp = data.data as Responsable;
             this.responsableUpd = resp;
@@ -258,11 +276,40 @@ console.log('xx: ' + xx);
   }
 
   /**
-   * Retorna True si los datos del formulario cambiaron.
+   * Retorna True si los datos del formulario cambiaron y son validos.
    */
   activarBotonSubmit(): boolean {
-    return !(this.responsableForm.valid && (this.responsableUpd.nombre != this.nombre.value))
+    return !(
+      this.responsableForm.valid && (
+        this.responsableUpd.nombre != this.nombre.value ||
+        this.responsableUpd.funcion != this.funcion.value ||
+        this.responsableUpd.area != this.area.value ||
+        this.responsableUpd.direccion != this.direccion.value ||
+        this.responsableUpd.email != this.email.value ||
+        this.responsableUpd.fechaAlta != this.fechaAlta.value.format('YYYY-MM-DD') ||
+        this.fechaBaja.value.isValid() ? (this.responsableUpd.fechaBaja !=  (this.fechaBaja.value.format('YYYY-MM-DD'))) : false
+      ))
     // return !this.responsableUpd.responsable == this.responsableForm.value
+  }
+
+  setFechaBajaPorEvent(event: MatDatepickerInputEvent<Date>) {    
+    let fb = this.fechaBaja.value;
+
+    if(fb){
+      let fa_m = moment(event.value);
+      let fb_m = moment(fb);
+
+      if(fa_m > fb_m){
+        this.fechaBaja.setValue('');
+      }
+    }
+  }
+
+  /**
+   * Retorna una instancia de moment con la fecha de alta. 
+   */
+  get fechaAltaMoment(){
+    return moment(this.fechaAlta.value);
   }
 
   get nombre() {

@@ -44,18 +44,21 @@
 
                 <div class="col-6">
                     <mat-form-field>
-                      <input matInput [matDatepicker]="picker" formControlName="fechaAlta" placeholder="Fecha de alta" required>
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
+                      <input matInput (dateChange)="setFechaBajaPorEvent($event)" [matDatepicker]="fechaAlta" formControlName="fechaAlta" placeholder="Fecha de alta">
+                      <mat-datepicker-toggle matSuffix [for]="fechaAlta"></mat-datepicker-toggle>
+                      <mat-datepicker #fechaAlta disabled="false"></mat-datepicker>
                       <mat-error *ngIf="fechaAlta.invalid">{{getErrorMessage('fechaAlta')}}</mat-error>
                     </mat-form-field>
-{{fechaAlta.value}}
-                    <!-- <mat-form-field>
-                        <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
-                      </mat-form-field> -->
                   </div>
+                  
+                  <div class="col-6">
+                      <mat-form-field>
+                        <input matInput [min]="fechaAltaMoment" [matDatepicker]="fechaBaja" formControlName="fechaBaja" placeholder="Fecha de baja" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="fechaBaja"></mat-datepicker-toggle>
+                        <mat-datepicker #fechaBaja disabled="false"></mat-datepicker>
+                        <!-- <mat-error *ngIf="fechaBaja.invalid">{{getErrorMessage('fechaBaja')}}</mat-error> -->
+                      </mat-form-field>
+                    </div>
 
                 <div class="col-6">
                   <mat-form-field>
