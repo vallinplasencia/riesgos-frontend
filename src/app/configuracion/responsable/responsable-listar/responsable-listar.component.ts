@@ -71,7 +71,7 @@ export class ResponsableListarComponent implements OnInit {
 
         this.data = [];
         this.totalItems = 0;
-        this.paginator.pageIndex = 0;
+        // this.paginator.pageIndex = 0;
         
           return this.responsableRepo!.index(
             this.paginator.pageIndex,

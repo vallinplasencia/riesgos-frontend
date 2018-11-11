@@ -27,7 +27,7 @@
 
         <div class="listado-header">
           <mat-form-field>
-            <input matInput placeholder="Buscar responsables por Nombre y/o Área" #input (keyup)="filtrar(input.value)">
+            <input matInput placeholder="Buscar responsables por nombre o área" #input (keyup)="filtrar(input.value)">
           </mat-form-field>
         </div>
         <div class="sin-resultado" *ngIf="!ocurrioError && !isLoadingResults && !data.length">
